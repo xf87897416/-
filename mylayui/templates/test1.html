@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>开始使用layui</title>
+    <link rel="stylesheet" href="/statics/css/layui.css">
+</head>
+
+<body>
+
+<div>nihao</div>
+
+<div class="layui-tab layui-tab-card">
+  <ul class="layui-tab-title">
+    <li class="layui-this">网站设置</li>
+    <li>用户管理</li>
+    <li>权限分配</li>
+    <li>商品管理</li>
+    <li>订单管理</li>
+  </ul>
+  <div class="layui-tab-content" style="height: auto;min-height: 100px">
+    <div class="layui-tab-item layui-show">
+
+        <div id="test2">
+{#            {{ page_list }}#}
+        </div>
+
+
+
+    </div>
+    <div class="layui-tab-item">你好这是第二页</div>
+    <div class="layui-tab-item">
+      <div class="layui-progress layui-progress-big">
+        <div class="layui-progress-bar " lay-percent="30%">
+            <span class="layui-progress-text">30%</span>
+        </div>
+      </div>
+    </div>
+    <div class="layui-tab-item">
+        <table class="layui-table" lay-size="lg" id="page">
+          <colgroup>
+            <col width="150">
+            <col width="200">
+            <col>
+          </colgroup>
+          <thead>
+            <tr>
+              <th>昵称</th>
+              <th>加入时间</th>
+              <th>签名</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>贤心</td>
+              <td>2016-11-29</td>
+              <td>人生就像是一场修行</td>
+            </tr>
+            <tr>
+              <td>许闲心</td>
+              <td>2016-11-28</td>
+              <td>于千万人之中遇见你所遇见的人，于千万年之中，时间的无涯的荒野里…</td>
+            </tr>
+          </tbody>
+        </table>
+        <div ></div>
+    </div>
+    <div class="layui-tab-item">
+        <form method="post"> {% csrf_token %}
+            <div class="layui-inline"> <!-- 注意：这一层元素并不是必须的 -->
+            <input name="time" type="text" class="layui-input" id="test1" placeholder="yyyy-MM-dd">
+        </div>
+            <input type="submit" value="提交">
+        </form>
+
+
+    </div>
+    <div class="layui-tab-item">6</div>
+  </div>
+</div>
+
+<script src="/statics/layui.js"></script>
+<script src="/statics/js/jquery.min.js"></script>
+
+<script>
+/*
+ layui.use(['layer', 'form'], function() {
+     var layer = layui.layer
+         , form = layui.form;
+
+     layer.msg('Hello World');
+ });
+*/
+
+layui.use('element', function(){
+  var element = layui.element;
+
+  //…
+});
+
+layui.use('laydate', function(){
+  var laydate = layui.laydate;
+
+  //执行一个laydate实例
+  laydate.render({
+    elem: '#test1',
+    {#type:'datetime'#}
+  });
+});
+
+
+
+
+
+layui.use(['laypage','jquery'], function(){
+  var laypage = layui.laypage;
+  var $ = layui.jquery;
+  //执行一个laypage实例
+  laypage.render({
+    elem: 'test2' //注意，这里的 test1 是 ID，不用加 # 号
+    ,count: 77//数据总数，从服务端得到
+    ,curr: 1
+    ,jump:function (obj,first) {
+        console.log("obj:",obj,'first:',first);
+        if(!first){
+          getShopCustomerManagePageInfo();
+          alert("不是第一次");
+       }
+      }
+
+  });
+});
+
+
+
+
+
+
+$(document).ready(function () {
+    getShopCustomerManagePageInfo();
+    toPage();
+});
+
+
+function getShopCustomerManagePageInfo() {
+        $.ajax({
+            type:'post',
+            async:false,
+            url:'get_info/',
+            data:{start:1},
+            success:function(data,status){
+                    data=eval("("+data+")");
+                    getShopCustomesInfo(data.root);
+                    startAllAppoint = data.currentResult;//当前页数(后台返回)
+                    totalPageAllAppoint = data.totalPage;//总页数(后台返回)
+                }
+        });
+    }
+
+
+    function getShopCustomesInfo(data) {
+        console.log("data:",data)
+    }
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>
