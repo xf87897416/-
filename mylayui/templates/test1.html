@@ -20,7 +20,7 @@
   </ul>
   <div class="layui-tab-content" style="height: auto;min-height: 100px">
     <div class="layui-tab-item layui-show">
-
+        <div id="my-data" style="background: #00F7DE; min-height: 50px;min-width: 50px">11</div>
         <div id="test2">
 {#            {{ page_list }}#}
         </div>
@@ -123,8 +123,8 @@ layui.use(['laypage','jquery'], function(){
     ,jump:function (obj,first) {
         console.log("obj:",obj,'first:',first);
         if(!first){
-          getShopCustomerManagePageInfo();
-          alert("不是第一次");
+          getShopCustomerManagePageInfo(obj.curr);
+          {#alert("不是第一次");#}
        }
       }
 
@@ -137,20 +137,22 @@ layui.use(['laypage','jquery'], function(){
 
 
 $(document).ready(function () {
-    getShopCustomerManagePageInfo();
+    getShopCustomerManagePageInfo(1);
     toPage();
 });
 
 
-function getShopCustomerManagePageInfo() {
+function getShopCustomerManagePageInfo(page) {
         $.ajax({
             type:'post',
-            async:false,
-            url:'get_info/',
-            data:{start:1},
+            url:'/getinfo/',
+            data:{start:page},
+            datatype:'json',
             success:function(data,status){
-                    data=eval("("+data+")");
-                    getShopCustomesInfo(data.root);
+                    var data=JSON.parse(data);
+                    console.log("执行：",data);
+                    {#console.log("status:",status);#}
+                    getShopCustomesInfo(data.mydata);
                     startAllAppoint = data.currentResult;//当前页数(后台返回)
                     totalPageAllAppoint = data.totalPage;//总页数(后台返回)
                 }
@@ -159,9 +161,12 @@ function getShopCustomerManagePageInfo() {
 
 
     function getShopCustomesInfo(data) {
-        console.log("data:",data)
+        console.log("data:",data);
+        $("#my-data").html(data)
     }
-
+    function toPage() {
+        console.log("123")
+    }
 
 
 

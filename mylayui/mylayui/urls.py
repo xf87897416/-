@@ -18,8 +18,8 @@ from django.contrib import admin
 from layui import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^',views.test),
-    url(r'^get_info/',views.test2),
+    url(r'^begin/',views.test),
+    url(r'^getinfo/',views.getinfo),
 
 
 ]
